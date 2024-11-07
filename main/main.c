@@ -70,8 +70,24 @@ int main() {
   align_rotor(pwm_a, pwm_b, pwm_c);
 
   // printf("Motor started\n");
+
+  t1 = to_us_since_boot(get_absolute_time());
+
   while (1) {
     get_sector();
-    move_clockwise_pwm(pwm_a, pwm_b, pwm_c);
+    move_motor_pwm(pwm_a, pwm_b, pwm_c, 1);
+
+    // printf("%f\n", angular_speed);
+
+    // if (data_collected) {
+    //   gpio_put(EN1, 0);
+    //   gpio_put(EN2, 0);
+    //   gpio_put(EN3, 0);
+      // printf("Angular speed: \n");
+      // for (int i = 0; i < MAX_VALUES; i++) {
+      //   printf("%f\n", angular_speed[i]);
+      // }
+      // return 0;
+    // }
   }
 }

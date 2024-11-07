@@ -22,15 +22,7 @@
 // motor voltage
 #define MOTOR_VOLTAGE 12
 
-// number of angles from encoder
-#define NUM_ANGLES 200
-// Number of angles within a single sector
-#define SECTOR_ANGLES 60
-// Step within each sector
-#define SECTOR_ANGLE_STEP (M_PI / 3 / NUM_ANGLES)
-
-// Conversion factor for ADC (3.3V / 12-bit resolution)
-extern const float CONVERSION_FACTOR;
+#define MAX_VALUES 200 // angular speed measurement
 
 // Motor control sequences
 extern const uint8_t in_seq[6][3];
@@ -41,24 +33,21 @@ extern volatile uint8_t timer_200hz_status;
 extern volatile uint8_t timer_1000hz_status;
 extern volatile uint8_t encoder_status;
 extern volatile uint8_t step_index;
+extern volatile uint8_t sector_index;
 
 // Angle of the current (used in FOC or other control algorithms)
 extern volatile float current_angle;
-extern volatile uint8_t previous_step_index;
 extern volatile uint8_t status;
 
 // pi control section
-extern float id_ref;
-extern float iq_ref;
 
-extern float kp;
-extern float ki;
-
-extern float id_error, iq_error;
-extern float id_integrator;
-extern float iq_integrator;
-extern float id_output, iq_output;
-
-extern float integrator_max;
+extern uint32_t t1;
+extern uint32_t t2;
+extern float dt;
+extern float angular_speed;
+// extern volatile float angular_speed[MAX_VALUES];
+extern volatile float time[MAX_VALUES];
+extern volatile uint8_t angular_speed_index;
+extern volatile uint8_t data_collected;
 
 #endif // CONSTS_H

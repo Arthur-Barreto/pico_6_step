@@ -24,8 +24,8 @@ void align_rotor(pwm_config_motor pwm_a, pwm_config_motor pwm_b,
                  pwm_config_motor pwm_c);
 void move_clockwise();
 void get_sector();
-void move_clockwise_pwm(pwm_config_motor pwm_a,
-                        pwm_config_motor pwm_b,
-                        pwm_config_motor pwm_c);
+void get_angular_speed();
+void move_motor_pwm(pwm_config_motor pwm_a, pwm_config_motor pwm_b,
+                    pwm_config_motor pwm_c, uint8_t direction);
 
 #endif // UTILS_H
