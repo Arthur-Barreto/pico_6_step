@@ -24,6 +24,10 @@
 
 #define MAX_VALUES 200 // angular speed measurement
 
+// #define ENCONDER_18_RAD 0.5729577951308232
+
+extern const float rad_1_8;
+
 // Motor control sequences
 extern const uint8_t in_seq[6][3];
 extern const uint8_t en_seq[6][3];
@@ -34,6 +38,7 @@ extern volatile uint8_t timer_1000hz_status;
 extern volatile uint8_t encoder_status;
 extern volatile uint8_t step_index;
 extern volatile uint8_t sector_index;
+extern volatile uint8_t trigered;
 
 // Angle of the current (used in FOC or other control algorithms)
 extern volatile float current_angle;

@@ -7,11 +7,14 @@ const uint8_t in_seq[6][3] = {{0, 1, 0}, {0, 1, 0}, {0, 0, 1},
 const uint8_t en_seq[6][3] = {{0, 1, 1}, {1, 1, 0}, {1, 0, 1},
                               {0, 1, 1}, {1, 1, 0}, {1, 0, 1}};
 
+const float rad_1_8 = 0.5729577951308232;
+
 volatile uint8_t timer_200hz_status = 0;
 volatile uint8_t timer_1000hz_status = 0;
 volatile uint8_t encoder_status = 0;
 volatile uint8_t step_index = 0;
 volatile uint8_t sector_index = 0;
+volatile uint8_t trigered = 0;
 volatile float current_angle = 0.0;
 volatile uint8_t status = 0;
 

@@ -8,6 +8,8 @@
 #include "hardware/pwm.h"
 #include "pico/stdlib.h"
 #include <math.h>
+#include "hardware/gpio.h"
+#include "hardware/uart.h"
 #include <stdio.h>
 
 typedef struct {
@@ -28,4 +30,7 @@ void get_angular_speed();
 void move_motor_pwm(pwm_config_motor pwm_a, pwm_config_motor pwm_b,
                     pwm_config_motor pwm_c, uint8_t direction);
 
+void setup_uart();
+void write_uart(const char *message);
+void core1_main();
 #endif // UTILS_H

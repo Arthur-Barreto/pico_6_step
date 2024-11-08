@@ -27,18 +27,8 @@ void extern_callback(uint gpio, uint32_t events) {
       current_angle -= 360.0;
     }
 
-    t2 = to_us_since_boot(get_absolute_time());
-    dt = (t2 - t1) / 1e6;
-    t1 = t2;
-    angular_speed = 1.8 / dt;
-    // angular_speed[angular_speed_index] = 1.8 / dt;
-    // time[angular_speed_index] = dt;
-    // angular_speed_index++;
+    trigered = 1;
 
-    // if (angular_speed_index >= MAX_VALUES) {
-    //   angular_speed_index = 0;
-    //   data_collected = 1;
-    // }
   }
 }
 
@@ -144,7 +134,7 @@ void move_motor_pwm(pwm_config_motor pwm_a, pwm_config_motor pwm_b,
   step_index = (sector_index + direction) % 6;
 
   // Define duty cycles
-  float duty_cycle = 0.4;
+  float duty_cycle = 0.3;
 
   // Apply PWM signals and enable signals based on the new step index
   pwm_set_chan_level(pwm_a.slice_num, pwm_a.chan_num,
@@ -184,3 +174,31 @@ void move_motor_pwm(pwm_config_motor pwm_a, pwm_config_motor pwm_b,
 //     timer_200hz_status = 0;
 //   }
 // }
+
+// Initialize UART
+void setup_uart() {
+    uart_init(uart0, 115200); // or adjust baud rate
+    gpio_set_function(0, GPIO_FUNC_UART); // TX
+    gpio_set_function(1, GPIO_FUNC_UART); // RX
+}
+
+// Write to UART
+void write_uart(const char *message) {
+    uart_puts(uart0, message);
+}
+
+void core1_main() {
+  setup_uart();
+  char speed_str[20];
+  float previous_speed = 0.0;
+  while (1) {
+
+    if (fabs(angular_speed - previous_speed) < 50) {
+      write_uart("0.0\r\n");
+      // write_uart("6820.926270\r\n");
+    } else {
+      snprintf(speed_str, sizeof(speed_str), "%f\r\n", angular_speed);
+      write_uart(speed_str);
+    }
+  }
+}
