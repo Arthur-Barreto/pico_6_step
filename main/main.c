@@ -3,7 +3,7 @@
 pwm_config_motor pwm_a, pwm_b, pwm_c;
 
 #define teste_pin 15
-int main() {
+ int main() {
   stdio_init_all();
   sleep_ms(2000);
 
@@ -71,6 +71,7 @@ int main() {
   sleep_ms(500);
 
   t1 = to_us_since_boot(get_absolute_time());
+  t_actual = t1 / 1e6;
 
   while (1) {
     get_sector();
@@ -80,10 +81,12 @@ int main() {
 
       t2 = to_us_since_boot(get_absolute_time());
       dt = (t2 - t1) / 1e6;
+      t_actual += dt;
       t1 = t2;
       t2 = 0;
       angular_speed = rad_1_8 / dt;
       trigered = 0;
+      send_log = 1;
     }
   }
 }

@@ -28,7 +28,6 @@ void extern_callback(uint gpio, uint32_t events) {
     }
 
     trigered = 1;
-
   }
 }
 
@@ -54,7 +53,6 @@ void align_rotor(pwm_config_motor pwm_a, pwm_config_motor pwm_b,
   gpio_put(EN1, 0);
   gpio_put(EN2, 0);
   gpio_put(EN3, 0);
-
 }
 
 void init_pwm(int pwm_pin_gp, uint wrap_value, uint *slice_num,
@@ -120,16 +118,13 @@ void get_sector() {
   }
 }
 
-void get_angular_speed() {
-}
-
 void move_motor_pwm(pwm_config_motor pwm_a, pwm_config_motor pwm_b,
                     pwm_config_motor pwm_c, uint8_t direction) {
 
-
   // compute the next step index based on the current sector index
   // direction is -1 to move clockwise and +1 to move counter-clockwise
-  // if the current sector is sector is 6, moving clockwise will move to sector 5
+  // if the current sector is sector is 6, moving clockwise will move to sector
+  // 5
 
   step_index = (sector_index + direction) % 6;
 
@@ -138,16 +133,15 @@ void move_motor_pwm(pwm_config_motor pwm_a, pwm_config_motor pwm_b,
 
   // Apply PWM signals and enable signals based on the new step index
   pwm_set_chan_level(pwm_a.slice_num, pwm_a.chan_num,
-                      in_seq[step_index][0] * PWM_RES * duty_cycle);
+                     in_seq[step_index][0] * PWM_RES * duty_cycle);
   pwm_set_chan_level(pwm_b.slice_num, pwm_b.chan_num,
-                      in_seq[step_index][1] * PWM_RES * duty_cycle);
+                     in_seq[step_index][1] * PWM_RES * duty_cycle);
   pwm_set_chan_level(pwm_c.slice_num, pwm_c.chan_num,
-                      in_seq[step_index][2] * PWM_RES * duty_cycle);
+                     in_seq[step_index][2] * PWM_RES * duty_cycle);
 
   gpio_put(EN1, en_seq[step_index][0]);
   gpio_put(EN2, en_seq[step_index][1]);
   gpio_put(EN3, en_seq[step_index][2]);
-  
 }
 
 // void move_clockwise_pwm(pwm_config_motor pwm_a,
@@ -177,28 +171,26 @@ void move_motor_pwm(pwm_config_motor pwm_a, pwm_config_motor pwm_b,
 
 // Initialize UART
 void setup_uart() {
-    uart_init(uart0, 115200); // or adjust baud rate
-    gpio_set_function(0, GPIO_FUNC_UART); // TX
-    gpio_set_function(1, GPIO_FUNC_UART); // RX
+  uart_init(uart0, 115200);             // or adjust baud rate
+  gpio_set_function(0, GPIO_FUNC_UART); // TX
+  gpio_set_function(1, GPIO_FUNC_UART); // RX
 }
 
 // Write to UART
-void write_uart(const char *message) {
-    uart_puts(uart0, message);
-}
+void write_uart(const char *message) { uart_puts(uart0, message); }
 
 void core1_main() {
   setup_uart();
-  char speed_str[20];
-  float previous_speed = 0.0;
+  // char speed_str[20];
+  // char time_str[20];
+  char combined_message[50];
+  // float previous_speed = 0.0;
   while (1) {
 
-    if (fabs(angular_speed - previous_speed) < 50) {
-      write_uart("0.0\r\n");
-      // write_uart("6820.926270\r\n");
-    } else {
-      snprintf(speed_str, sizeof(speed_str), "%f\r\n", angular_speed);
-      write_uart(speed_str);
+    if (send_log) {
+      snprintf(combined_message, sizeof(combined_message), "%.2f %.2f\r\n", t_actual, angular_speed);
+      write_uart(combined_message);
+      send_log = 0;
     }
   }
 }

@@ -15,12 +15,14 @@ volatile uint8_t encoder_status = 0;
 volatile uint8_t step_index = 0;
 volatile uint8_t sector_index = 0;
 volatile uint8_t trigered = 0;
+volatile uint8_t send_log= 0;
 volatile float current_angle = 0.0;
 volatile uint8_t status = 0;
 
 // pi control section
 uint32_t t1 = 0;
 uint32_t t2 = 0;
+uint32_t t_actual = 0;
 float dt = 0.0;
 float angular_speed = 0.0;
 // volatile float angular_speed[MAX_VALUES];

@@ -39,6 +39,7 @@ extern volatile uint8_t encoder_status;
 extern volatile uint8_t step_index;
 extern volatile uint8_t sector_index;
 extern volatile uint8_t trigered;
+extern volatile uint8_t send_log;
 
 // Angle of the current (used in FOC or other control algorithms)
 extern volatile float current_angle;
@@ -48,6 +49,7 @@ extern volatile uint8_t status;
 
 extern uint32_t t1;
 extern uint32_t t2;
+extern uint32_t t_actual;
 extern float dt;
 extern float angular_speed;
 // extern volatile float angular_speed[MAX_VALUES];
